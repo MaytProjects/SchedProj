@@ -1,25 +1,35 @@
-// script.js
 document.addEventListener('DOMContentLoaded', function() {
+    // Define tasks with time slots
     const tasks = [
-        { name: "Morning Workout", duration: 30 }, // Task name and duration in minutes
-        { name: "Work", duration: 120 },
-        { name: "Lunch Break", duration: 60 },
-        { name: "Evening Walk", duration: 30 },
+        { name: "Morning Workout", duration: 30, startHour: 7, endHour: 8 },
+        { name: "Work", duration: 120, startHour: 9, endHour: 11 },
+        { name: "Lunch Break", duration: 60, startHour: 12, endHour: 13 },
+        { name: "Evening Walk", duration: 30, startHour: 17, endHour: 18 },
     ];
 
     let completedTasks = 0;
     const totalTasks = tasks.length;
 
-    // Dynamically create task elements
+    // Grab the container to display tasks
     const tasksContainer = document.getElementById('tasks');
+
+    // Loop through each task and create task elements
     tasks.forEach((task, index) => {
         const taskElement = document.createElement('div');
         taskElement.className = 'task';
         taskElement.innerHTML = `
             <p>${task.name}</p>
-            <button id="task${index}">Mark as Completed</button>
+            <button id="task${index}" style="display: none;">Mark as Completed</button>
         `;
         tasksContainer.appendChild(taskElement);
+
+        // Get current time (in hours)
+        const currentTime = new Date().getHours();
+
+        // Show button if the task's time range includes the current time
+        if (currentTime >= task.startHour && currentTime < task.endHour) {
+            document.getElementById(`task${index}`).style.display = 'block'; // Show the button
+        }
 
         // Add event listener to mark task as completed
         document.getElementById(`task${index}`).addEventListener('click', function() {
@@ -46,3 +56,4 @@ document.addEventListener('DOMContentLoaded', function() {
     progressBar.id = 'progress';
     timeline.appendChild(progressBar);
 });
+
